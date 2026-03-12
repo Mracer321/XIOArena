@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tournament;
+use App\Models\Organization;
+
 
 class HomeController extends Controller
 {
@@ -19,6 +21,18 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        return view('home', compact('featured', 'latest'));
+        // Top orgs for homepage
+        $orgs = Organization::where('trust_status', '!=', 'banned')
+            ->orderByRaw("
+            CASE 
+                WHEN membership = 'premium' THEN 1
+                WHEN membership = 'verified' THEN 2
+                ELSE 3
+            END
+        ")
+            ->take(4)
+            ->get();
+
+        return view('home', compact('featured', 'latest', 'orgs'));
     }
 }

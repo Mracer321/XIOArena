@@ -2,133 +2,203 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xioArena</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <title>XIOArena</title>
+
+    @vite(['resources/css/app.css','resources/js/app.js'])
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
 </head>
 
-<body class="bg-[#0b0f17] text-gray-200">
+<body class="bg-[#0b0f17] text-gray-200 overflow-hidden">
 
-    <!-- Mobile Top Header -->
-    <header class="md:hidden bg-[#111827] p-4 flex justify-between items-center border-b border-gray-800 sticky top-0 z-50">
-        <h1 class="text-lg font-bold text-blue-500">xioArena</h1>
-        <button id="menuToggle" class="text-xl">☰</button>
-    </header>
+    <div class="flex h-screen">
 
-    <!-- Mobile Slide Menu -->
-    <div id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-60 hidden z-40">
-        <div class="bg-[#111827] w-64 h-full p-6">
+        <!-- =========================
+SIDEBAR
+========================= -->
 
-            <h2 class="text-lg font-bold text-blue-500 mb-8">Menu</h2>
+        <aside id="sidebar"
+            class="fixed md:relative z-40 
+w-64 h-full 
+bg-[#0e1625] border-r border-gray-800 
+flex flex-col p-6
+transform -translate-x-full md:translate-x-0
+transition-transform duration-300">
 
-            <nav class="space-y-4">
-                <a href="/" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Home</a>
-                <a href="/tournaments" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Tournaments</a>
-                <a href="/orgs" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Organizations</a>
-                <a href="/players" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Players</a>
-            </nav>
+            <!-- Logo -->
 
-        </div>
-    </div>
+            <div class="flex items-center gap-2 mb-10">
 
-    <div class="flex min-h-screen">
+                <img src="/images/xio-logo.png" class="h-8">
 
-        <!-- Desktop Sidebar -->
-        <aside class="hidden md:flex w-64 bg-[#111827] flex-col p-6 border-r border-gray-800">
+                <!-- <span class="text-lg font-semibold text-blue-400">
+                    XIOArena
+                </span> -->
 
-            <h1 class="text-xl font-bold text-blue-500 mb-10">
-                xioArena
-            </h1>
-
-            <nav class="space-y-4 text-sm">
-                <a href="/" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Dashboard</a>
-                <a href="/tournaments" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Tournaments</a>
-                <a href="/orgs" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Organizations</a>
-                <a href="/players" class="block px-3 py-2 rounded-lg hover:bg-gray-800">Players</a>
-            </nav>
-
-            <div class="mt-auto text-xs text-gray-500">
-                © {{ date('Y') }} xioArena
             </div>
+
+            <nav class="space-y-2 text-sm">
+
+                <a href="/"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('/') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="home"></i>
+                    Home
+
+                </a>
+
+
+                <a href="/tournaments"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('tournaments*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="trophy"></i>
+                    Tournaments
+
+                </a>
+
+
+                <a href="/organizations"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('organizations*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="building"></i>
+                    Organizations
+
+                </a>
+
+
+                <a href="/players"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('players*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="users"></i>
+                    Players
+
+                </a>
+
+
+                <a href="/contact"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('contact*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="mail"></i>
+                    Contact Us
+
+                </a>
+
+            </nav>
 
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-4 md:p-8 pb-24 md:pb-8">
 
-            @yield('content')
+        <!-- =========================
+MAIN AREA
+========================= -->
 
-            <!-- Footer -->
-            <footer class="mt-16 border-t border-gray-800 pt-8 pb-6 text-center">
+        <div class="flex-1 flex flex-col">
 
-                <div class="flex justify-center gap-6 mb-4 text-xl">
+            <!-- =========================
+HEADER
+========================= -->
 
-                    <a href="https://youtube.com" target="_blank"
-                        class="hover:text-red-500 transition">
-                        🎥
-                    </a>
+            <header class="h-16 flex items-center justify-between
+bg-[#0e1625] border-b border-gray-800
+px-4 md:px-6
+fixed md:relative w-full z-30">
 
-                    <a href="https://discord.com" target="_blank"
-                        class="hover:text-indigo-400 transition">
-                        💬
-                    </a>
+                <!-- LEFT -->
 
-                    <a href="https://instagram.com" target="_blank"
-                        class="hover:text-pink-500 transition">
-                        📸
-                    </a>
+                <div class="flex items-center gap-4">
+
+                    <!-- Mobile Menu Button -->
+
+                    <button id="menuBtn" class="md:hidden">
+
+                        <i data-lucide="menu"></i>
+
+                    </button>
 
                 </div>
 
-                <p class="text-xs text-gray-500">
-                    © {{ date('Y') }} xioArena. All rights reserved.
-                </p>
 
-            </footer>
+                <!-- SEARCH -->
 
-        </main>
+                <div class="flex-1 max-w-xl mx-4">
+
+                    <div class="relative">
+
+                        <input
+                            type="text"
+                            placeholder="Search tournaments..."
+                            class="w-full bg-[#111827] border border-gray-700 rounded-lg py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-blue-500">
+
+                        <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div class="flex items-center gap-4">
+
+                    <button class="relative">
+
+                        <i data-lucide="bell"></i>
+
+                        <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =========================
+SCROLLABLE CONTENT
+========================= -->
+
+            <main class="flex-1 overflow-y-auto pt-20 md:pt-6 p-4 md:p-6">
+
+                @yield('content')
+
+                <footer class="border-t border-gray-800 py-6 text-center text-xs text-gray-500 mt-10">
+
+                    © {{ date('Y') }} XIOArena. All rights reserved.
+
+                </footer>
+
+            </main>
+
+        </div>
 
     </div>
 
-    <!-- Mobile Bottom Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-[#111827] border-t border-gray-800 md:hidden flex justify-around py-3 text-sm z-50">
 
-        <a href="/" class="flex flex-col items-center">
-            🏠
-            <span>Home</span>
-        </a>
-
-        <a href="/tournaments" class="flex flex-col items-center">
-            🎮
-            <span>Tournaments</span>
-        </a>
-
-        <a href="/orgs" class="flex flex-col items-center">
-            🏢
-            <span>Orgs</span>
-        </a>
-
-    </nav>
+    <!-- =========================
+SCRIPTS
+========================= -->
 
     <script>
-        const toggle = document.getElementById('menuToggle');
-        const menu = document.getElementById('mobileMenu');
+        lucide.createIcons()
 
-        if (toggle) {
-            toggle.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
-        }
+        const sidebar = document.getElementById("sidebar")
+        const menuBtn = document.getElementById("menuBtn")
 
-        if (menu) {
-            menu.addEventListener('click', (e) => {
-                if (e.target === menu) {
-                    menu.classList.add('hidden');
-                }
-            });
-        }
+        menuBtn.addEventListener("click", () => {
+
+            sidebar.classList.toggle("-translate-x-full")
+
+        })
     </script>
 
 </body>
