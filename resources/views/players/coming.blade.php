@@ -131,7 +131,7 @@
 
 
 <script>
-    const launchDate = new Date("2026-03-08T00:00:00+05:30").getTime();
+    const launchDate = new Date("2026-03-25T00:00:00+05:30").getTime();
 
     const timer = setInterval(function() {
 

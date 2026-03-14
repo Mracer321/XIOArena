@@ -11,39 +11,36 @@ class PublicOrgController extends Controller
     // All Orgs
     public function index(Request $request)
     {
-        $query = \App\Models\Organization::query()
+        $query = Organization::query()
             ->where('trust_status', '!=', 'banned');
 
-        // 🔎 Search by name
+        // Search
         if ($request->search) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // 🎯 Filter by trust status
+        // Filter
         if ($request->filter) {
             $query->where('trust_status', $request->filter);
         }
 
         $orgs = $query
-            ->orderByRaw("
-            CASE 
-                WHEN membership = 'premium' THEN 1
-                WHEN membership = 'verified' THEN 2
-                ELSE 3
-            END
-        ")
-            ->orderByRaw("
-            CASE 
-                WHEN trust_status = 'trusted' THEN 1
-                ELSE 2
-            END
-        ")
+            ->withCount('tournaments')
             ->latest()
             ->paginate(12)
             ->withQueryString();
 
-        return view('organizations.index', compact('orgs'));
+        // Tab counts
+        $counts = [
+            'all' => Organization::count(),
+            'trusted' => Organization::where('trust_status', 'trusted')->count(),
+            'verified' => Organization::where('trust_status', 'verified')->count(),
+            'normal' => Organization::where('trust_status', 'normal')->count(),
+        ];
+
+        return view('organizations.index', compact('orgs', 'counts'));
     }
+
     // Single Org
     public function show($slug)
     {

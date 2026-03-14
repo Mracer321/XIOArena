@@ -2,88 +2,205 @@
 
 @section('content')
 
-<div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl md:text-3xl font-extrabold 
-               bg-gradient-to-r from-cyan-400 to-purple-500 
-               bg-clip-text text-transparent tracking-wide">
-        Open Tournaments
-    </h2>
+<!-- PAGE HEADER -->
+<div class="mb-6">
 
-    <div class="h-[2px] flex-1 ml-6 bg-gradient-to-r 
-                from-cyan-500/50 to-transparent"></div>
+    <h1 class="text-2xl md:text-3xl font-bold text-white">
+        All Tournaments
+    </h1>
+
+    <p class="text-gray-400 text-sm">
+        Browse and join competitive tournaments
+    </p>
+
 </div>
-<!-- Filters -->
-<form method="GET" class="mb-6 grid grid-cols-2 md:grid-cols-4 gap-3">
 
-    <input type="text" name="search"
-        value="{{ request('search') }}"
-        placeholder="Search..."
-        class="bg-[#111827] border border-gray-700 rounded px-3 py-2 text-sm">
 
-    <select name="type"
-        class="bg-[#111827] border border-gray-700 rounded px-3 py-2 text-sm">
-        <option value="">All Type</option>
-        <option value="online" {{ request('type')=='online'?'selected':'' }}>Online</option>
-        <option value="offline" {{ request('type')=='offline'?'selected':'' }}>Offline (LAN)</option>
-    </select>
+<!-- FILTER TOGGLE -->
+<div class="flex items-center justify-between mb-4">
 
-    <select name="entry_type"
-        class="bg-[#111827] border border-gray-700 rounded px-3 py-2 text-sm">
-        <option value="">All Entry</option>
-        <option value="free" {{ request('entry_type')=='free'?'selected':'' }}>Free</option>
-        <option value="paid" {{ request('entry_type')=='paid'?'selected':'' }}>Paid</option>
-    </select>
+    <p class="text-sm text-gray-400">
+        Showing {{ $tournaments->total() }} tournaments
+    </p>
 
-    <button class="bg-indigo-600 text-white rounded px-4 py-2 text-sm">
-        Filter
+    <button id="filterToggle"
+        class="flex items-center gap-2 bg-[#111827] border border-gray-700
+px-4 py-2 rounded-lg text-sm hover:bg-[#1f2937] transition">
+
+        <i data-lucide="filter" class="w-4 h-4"></i>
+
+        Filters
+
     </button>
 
-</form>
+</div>
 
-<!-- Grid -->
-<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
-    @foreach($tournaments as $tournament)
 
-    <a href="/tournament/{{ $tournament->slug }}"
-        class="bg-[#111827] rounded-xl p-3 hover:scale-105 transition shadow-md relative">
+<!-- FILTER PANEL -->
+<div id="filterPanel"
+    class="hidden bg-[#0f172a] border border-gray-800 rounded-2xl p-5 mb-6">
 
-        <div class="aspect-square rounded-lg overflow-hidden mb-3">
-            @if($tournament->poster)
-            <img src="{{ asset('storage/'.$tournament->poster) }}"
-                class="w-full h-full object-cover">
-            @else
-            <img src="https://picsum.photos/500"
-                class="w-full h-full object-cover">
-            @endif
+    <form method="GET" id="filterForm">
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+
+            <!-- SEARCH -->
+            <div>
+
+                <label class="text-xs text-gray-400 mb-2 block">
+                    Search
+                </label>
+
+                <input type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    placeholder="Search tournaments..."
+                    class="w-full bg-[#020617] border border-gray-700 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500">
+
+            </div>
+
+
+
+            <!-- ENTRY TYPE -->
+            <div>
+
+                <label class="text-xs text-gray-400 mb-2 block">
+                    Entry Type
+                </label>
+
+                <div class="flex gap-2 flex-wrap">
+
+                    <a href="/tournaments"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('entry_type')==''?'bg-blue-600':'bg-[#1e293b]' }}">
+                        All
+                    </a>
+
+                    <a href="?entry_type=free"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('entry_type')=='free'?'bg-blue-600':'bg-[#1e293b]' }}">
+                        Free
+                    </a>
+
+                    <a href="?entry_type=paid"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('entry_type')=='paid'?'bg-blue-600':'bg-[#1e293b]' }}">
+                        Paid
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TYPE -->
+            <div>
+
+                <label class="text-xs text-gray-400 mb-2 block">
+                    Tournament Type
+                </label>
+
+                <div class="flex gap-2 flex-wrap">
+
+                    <a href="/tournaments"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('type')==''?'bg-blue-600':'bg-[#1e293b]' }}">
+                        All
+                    </a>
+
+                    <a href="?type=online"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('type')=='online'?'bg-blue-600':'bg-[#1e293b]' }}">
+                        Online
+                    </a>
+
+                    <a href="?type=offline"
+                        class="px-4 py-2 text-sm rounded-lg
+{{ request('type')=='offline'?'bg-blue-600':'bg-[#1e293b]' }}">
+                        LAN
+                    </a>
+
+                </div>
+
+            </div>
+
+
         </div>
 
-        <h4 class="text-sm font-semibold mb-1">
-            {{ $tournament->title }}
-        </h4>
-
-        <p class="text-xs text-gray-400">
-            ₹{{ number_format($tournament->prize_pool) }}
-        </p>
-
-        <!-- Org Type Badge -->
-        @php
-        $orgType = $tournament->organization->trust_status ?? 'normal';
-        @endphp
-
-        <span class="text-xs px-2 py-1 rounded mt-2 inline-block
-        {{ $orgType == 'trusted' ? 'bg-purple-600' : ($orgType == 'verified' ? 'bg-blue-600' : 'bg-gray-600') }}">
-            {{ ucfirst($orgType) }}
-        </span>
-
-    </a>
-
-    @endforeach
+    </form>
 
 </div>
 
-<div class="mt-8">
+
+
+<!-- TOURNAMENT GRID -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+
+    @forelse($tournaments as $tournament)
+
+    <x-tournament-card
+        :slug="$tournament->slug"
+        :title="$tournament->title"
+        :prize="$tournament->prize_pool"
+        :registration="$tournament->registration_status"
+        :entry="$tournament->entry_type"
+        :image="$tournament->poster"
+        :orgStatus="$tournament->organization->trust_status ?? 'normal'" />
+
+    @empty
+
+    <p class="col-span-4 text-gray-400 text-sm">
+        No tournaments found.
+    </p>
+
+    @endforelse
+
+</div>
+
+
+
+<!-- PAGINATION -->
+<div class="mt-10">
+
     {{ $tournaments->links() }}
+
 </div>
+
+
+
+<!-- FILTER TOGGLE SCRIPT -->
+<script>
+    const toggleBtn = document.getElementById("filterToggle");
+    const panel = document.getElementById("filterPanel");
+
+    toggleBtn.addEventListener("click", () => {
+
+        panel.classList.toggle("hidden");
+
+    });
+</script>
+
+
+
+<!-- AUTO SEARCH -->
+<script>
+    let timer;
+
+    document.querySelector("input[name='search']")
+        .addEventListener("keyup", function() {
+
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+
+                document.getElementById("filterForm").submit();
+
+            }, 600);
+
+        });
+</script>
 
 @endsection

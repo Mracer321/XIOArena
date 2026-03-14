@@ -8,6 +8,7 @@ use App\Http\Controllers\OrgController;
 use App\Http\Controllers\PublicOrgController;
 use App\Http\Controllers\AdminOrgController;
 use App\Http\Controllers\AdminTournamentController;
+use App\Http\Controllers\ContactController;
 
 
 Route::get('/', [HomeController::class, 'index']);
@@ -26,19 +27,8 @@ Route::get('/players', function () {
     return view('players.coming');
 });
 
-// Route::get('/players', function () {
-//     return view('players.index');
-// });
-
-// Route::get('/player/{slug}', function ($slug) {
-//     return view('players.show', ['slug' => $slug]);
-// });
-
-// Admin Routes
-
-// Route::get('/admin', function () {
-//     return view('admin.dashboard');
-// });
+Route::get('/contact', [ContactController::class, 'index']);
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
 
 Route::get('/login', [AuthController::class, 'loginForm'])
