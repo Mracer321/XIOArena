@@ -23,6 +23,8 @@ Route::get('/tournaments/closed', [PublicTournamentController::class, 'closed'])
 Route::get('/orgs', [PublicOrgController::class, 'index'])->name('orgs.index');
 Route::get('/org/{slug}', [PublicOrgController::class, 'show'])->name('org.show');
 
+Route::get('/org/{slug}/social-stats', [PublicOrgController::class, 'socialStats']);
+
 Route::get('/players', function () {
     return view('players.coming');
 });

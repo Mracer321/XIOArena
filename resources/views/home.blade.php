@@ -150,7 +150,7 @@
 snap-x snap-mandatory
 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible">
 
-    @forelse($latest as $tournament)
+    @forelse($featured as $tournament)
 
     <x-tournament-card
         :slug="$tournament->slug"

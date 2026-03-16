@@ -22,14 +22,14 @@ class HomeController extends Controller
             ->get();
 
         // Top orgs for homepage
-        $orgs = Organization::where('trust_status', '!=', 'banned')
+        $orgs = Organization::where('trust_status', 'trusted')
             ->orderByRaw("
-            CASE 
-                WHEN membership = 'premium' THEN 1
-                WHEN membership = 'verified' THEN 2
-                ELSE 3
-            END
-        ")
+        CASE 
+            WHEN membership = 'premium' THEN 1
+            WHEN membership = 'verified' THEN 2
+            ELSE 3
+        END
+    ")
             ->take(4)
             ->get();
 

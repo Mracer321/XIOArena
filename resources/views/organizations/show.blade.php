@@ -112,20 +112,6 @@ $past = $org->tournaments->where('registration_status','closed');
 
                     @endif
 
-
-                    @if($org->discord)
-
-                    <a href="{{$org->discord}}" target="_blank"
-                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 
-                    rounded-lg text-sm font-semibold">
-
-                        Join Discord
-
-                    </a>
-
-                    @endif
-
-
                     @if($org->youtube)
 
                     <a href="{{$org->youtube}}" target="_blank"
@@ -139,6 +125,18 @@ $past = $org->tournaments->where('registration_status','closed');
 
                     @endif
 
+
+                    @if($org->discord)
+
+                    <a href="{{$org->discord}}" target="_blank"
+                        class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 
+                    rounded-lg text-sm font-semibold">
+
+                        Join Discord
+
+                    </a>
+
+                    @endif
 
                     @if($org->website)
 
@@ -159,7 +157,7 @@ $past = $org->tournaments->where('registration_status','closed');
 
 
             <!-- FOLLOW BUTTON -->
-            @if($org->instagram)
+            <!-- @if($org->instagram)
 
             <a href="{{ $org->instagram }}"
                 target="_blank"
@@ -170,7 +168,7 @@ $past = $org->tournaments->where('registration_status','closed');
 
             </a>
 
-            @endif
+            @endif -->
 
         </div>
 
@@ -178,6 +176,120 @@ $past = $org->tournaments->where('registration_status','closed');
 
 </div>
 
+<!-- SOCIAL STATS -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+
+    <!-- YOUTUBE -->
+    <div class="bg-[#0f172a] border border-white/5 rounded-xl p-5 flex items-center gap-4">
+
+        <div class="w-10 h-10 flex items-center justify-center 
+        bg-red-500/10 text-red-400 rounded-lg">
+            <i data-lucide="youtube" class="w-5 h-5"></i>
+        </div>
+
+        <div>
+            <p id="youtubeSubs" class="text-xl font-semibold">
+                Loading...
+            </p>
+            <p class="text-xs text-gray-400">
+                YouTube Subs
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- INSTAGRAM -->
+    <div class="bg-[#0f172a] border border-white/5 rounded-xl p-5 flex items-center gap-4">
+
+        <div class="w-10 h-10 flex items-center justify-center 
+        bg-pink-500/10 text-pink-400 rounded-lg">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
+        </div>
+
+        <div>
+            <p id="instaFollowers" class="text-xl font-semibold">
+                Loading...
+            </p>
+            <p class="text-xs text-gray-400">
+                Instagram Followers
+            </p>
+        </div>
+
+    </div>
+
+    <div class="bg-[#0f172a] border border-white/5 rounded-xl p-5 flex items-center gap-4">
+
+        <div class="w-10 h-10 flex items-center justify-center 
+        bg-pink-500/10 text-pink-400 rounded-lg">
+            <i data-lucide="instagram" class="w-5 h-5"></i>
+        </div>
+
+        <div>
+            <p id="discordMembers" class="text-xl font-semibold">
+                Loading...
+            </p>
+            <p class="text-xs text-gray-400">
+                Discord Members
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- TOURNAMENTS -->
+    <div class="bg-[#0f172a] border border-white/5 rounded-xl p-5 flex items-center gap-4">
+
+        <div class="w-10 h-10 flex items-center justify-center 
+        bg-blue-500/10 text-blue-400 rounded-lg">
+            <i data-lucide="trophy" class="w-5 h-5"></i>
+        </div>
+
+        <div>
+            <p class="text-xl font-semibold">
+                {{ $org->tournaments->count() }}
+            </p>
+            <p class="text-xs text-gray-400">
+                Tournaments
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+    function formatCount(num) {
+
+        num = Number(num);
+
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1).replace('.0', '') + 'M';
+        }
+
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1).replace('.0', '') + 'K';
+        }
+
+        return num;
+    }
+
+    fetch("/org/{{ $org->slug }}/social-stats")
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById("youtubeSubs").innerText =
+                data.youtube ? formatCount(data.youtube) : "Inactive";
+
+            document.getElementById("instaFollowers").innerText =
+                data.instagram ? formatCount(data.instagram) : "Inactive";
+
+            document.getElementById("discordMembers").innerText =
+                data.discord ? formatCount(data.discord) : "Inactive";
+
+        });
+</script>
 
 
 <!-- ABOUT -->

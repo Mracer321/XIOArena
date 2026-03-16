@@ -15,12 +15,11 @@ class AdminTournamentController extends Controller
         $tournaments = Tournament::with('organization')->latest()->get();
         return view('admin.tournaments.index', compact('tournaments'));
 
+        // $tournaments = \App\Models\Tournament::with('organization')
+        //     ->latest()
+        //     ->get();
 
-        $tournaments = \App\Models\Tournament::with('organization')
-            ->latest()
-            ->get();
-
-        return view('admin.tournaments.index', compact('tournaments'));
+        // return view('admin.tournaments.index', compact('tournaments'));
     }
 
     public function create()

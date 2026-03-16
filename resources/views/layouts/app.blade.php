@@ -150,25 +150,23 @@ MAIN AREA
 HEADER
 ========================= -->
 
-            <header class="h-16 flex items-center justify-between
+            <header class="h-16 flex items-center justify-center
 bg-[#0e1625] border-b border-gray-800
-px-4 md:px-6
-fixed md:relative w-full z-20">
+px-4
+fixed w-full z-20
+md:hidden">
 
-                <!-- LEFT -->
+                <!-- LEFT MENU -->
+                <button id="menuBtn" class="absolute left-4">
+                    <i data-lucide="menu"></i>
+                </button>
 
-                <div class="flex items-center gap-4">
-
-                    <!-- Mobile Menu Button -->
-
-                    <button id="menuBtn" class="md:hidden">
-                        <i data-lucide="menu"></i>
-                    </button>
-
+                <!-- BRAND -->
+                <div class="font-extrabold tracking-widest text-lg">
+                    <span class="text-blue-500">XIO</span><span class="text-white">ARENA</span>
                 </div>
 
             </header>
-
 
             <!-- =========================
 SCROLLABLE CONTENT

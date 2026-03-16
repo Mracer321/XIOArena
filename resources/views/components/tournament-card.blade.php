@@ -1,5 +1,5 @@
 <a href="{{ route('tournament.show', $slug) }}"
-    class="min-w-[220px] md:min-w-[240px] lg:min-w-0 snap-start">
+    class="min-w-[190px] md:min-w-[190px] lg:min-w-0 snap-start">
 
     <div class="bg-[#0f1b2e] rounded-2xl overflow-hidden
 border border-[#1f2a40]

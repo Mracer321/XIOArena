@@ -80,23 +80,27 @@
             <div>
                 <h3 class="font-semibold">{{$org->name}}</h3>
 
-                @if($org->trust_status == 'trusted')
-                <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">
-                    Trusted
-                </span>
-                @endif
+                <div class="flex gap-1 mt-1">
 
-                @if($org->trust_status == 'verified')
-                <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
-                    Verified
-                </span>
-                @endif
+                    @if($org->trust_status === 'trusted')
+                    <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">
+                        Trusted
+                    </span>
+                    @endif
 
-                @if($org->trust_status == 'normal')
-                <span class="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded">
-                    New
-                </span>
-                @endif
+                    @if($org->membership === 'verified')
+                    <span class="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">
+                        Verified
+                    </span>
+                    @endif
+
+                    @if($org->membership === 'free')
+                    <span class="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">
+                        Unverified
+                    </span>
+                    @endif
+
+                </div>
 
             </div>
 

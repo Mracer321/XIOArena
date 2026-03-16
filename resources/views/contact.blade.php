@@ -89,6 +89,7 @@
                     <input
                         type="text"
                         name="name"
+                        placeholder="Enter Your Name"
                         value="{{ old('name') }}"
                         required
                         class="w-full bg-[#111827] border border-gray-700 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500">
