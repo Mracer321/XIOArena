@@ -117,32 +117,32 @@ class PublicOrgController extends Controller
     --------------------------
     */
 
-        // if ($org->instagram) {
+        if ($org->instagram) {
 
-        //     preg_match('/instagram\.com\/([^\/]+)/', $org->instagram, $matches);
-        //     $username = $matches[1] ?? null;
+            preg_match('/instagram\.com\/([^\/]+)/', $org->instagram, $matches);
+            $username = $matches[1] ?? null;
 
-        //     if ($username) {
+            if ($username) {
 
-        //         $instagram = Cache::remember("ig_" . $username, 3600, function () use ($username) {
+                $instagram = Cache::remember("ig_" . $username, 3600, function () use ($username) {
 
-        //             $token = env("APIFY_TOKEN");
+                    $token = env("APIFY_TOKEN");
 
-        //             $response = Http::post(
-        //                 "https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=" . $token,
-        //                 [
-        //                     "usernames" => [$username]
-        //                 ]
-        //             );
+                    $response = Http::post(
+                        "https://api.apify.com/v2/acts/apify~instagram-profile-scraper/run-sync-get-dataset-items?token=" . $token,
+                        [
+                            "usernames" => [$username]
+                        ]
+                    );
 
-        //             if (!$response->successful()) return null;
+                    if (!$response->successful()) return null;
 
-        //             $data = $response->json();
+                    $data = $response->json();
 
-        //             return $data[0]["followersCount"] ?? null;
-        //         });
-        //     }
-        // }
+                    return $data[0]["followersCount"] ?? null;
+                });
+            }
+        }
 
         /*
     --------------------------
