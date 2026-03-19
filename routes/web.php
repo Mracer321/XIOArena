@@ -9,7 +9,8 @@ use App\Http\Controllers\PublicOrgController;
 use App\Http\Controllers\AdminOrgController;
 use App\Http\Controllers\AdminTournamentController;
 use App\Http\Controllers\ContactController;
-
+use App\Http\Controllers\AdminCreatorController;
+use App\Http\Controllers\CreatorController;
 
 Route::get('/', [HomeController::class, 'index']);
 
@@ -25,12 +26,19 @@ Route::get('/org/{slug}', [PublicOrgController::class, 'show'])->name('org.show'
 
 Route::get('/org/{slug}/social-stats', [PublicOrgController::class, 'socialStats']);
 
+Route::get('/creators/{slug}/social-stats', [CreatorController::class, 'socialStats']);
+
+Route::get('/creators', [CreatorController::class, 'index'])->name('creators.index');
+Route::get('/creator/{slug}', [CreatorController::class, 'show'])->name('creator.show');
+Route::get('/creators/{slug}/social-stats', [CreatorController::class, 'socialStats']);
+
 Route::get('/players', function () {
     return view('players.coming');
 });
 
 Route::get('/contact', [ContactController::class, 'index']);
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
 
 
 Route::get('/login', [AuthController::class, 'loginForm'])
@@ -82,4 +90,14 @@ Route::prefix('admin')
 
         Route::get('/tournaments/{id}/edit', [\App\Http\Controllers\AdminTournamentController::class, 'edit']);
         Route::post('/tournaments/{id}/update', [\App\Http\Controllers\AdminTournamentController::class, 'update']);
+
+
+        // CREATORS
+        Route::get('/creators', [AdminCreatorController::class, 'index']);
+        Route::get('/creators/create', [AdminCreatorController::class, 'create']);
+        Route::post('/creators', [AdminCreatorController::class, 'store']);
+        Route::get('/creators/{id}', [AdminCreatorController::class, 'show']);
+        Route::get('/creators/{id}/edit', [AdminCreatorController::class, 'edit']);
+        Route::post('/creators/{id}/update', [AdminCreatorController::class, 'update']);
+        Route::post('/creators/{id}/delete', [AdminCreatorController::class, 'destroy']);
     });

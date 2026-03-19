@@ -120,7 +120,12 @@ transition-transform duration-300">
                     <i data-lucide="building"></i>
                     Organizations
                 </a>
-
+                <a href="/creators"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('creators*') || request()->is('creator/*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+                    <i data-lucide="mic-2"></i>
+                    Creators
+                </a>
                 <a href="/players"
                     class="flex items-center gap-3 px-4 py-2 rounded-lg
 {{ request()->is('players*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">

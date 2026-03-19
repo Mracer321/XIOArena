@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tournament;
 use App\Models\Organization;
-
+use App\Models\Creator;
 
 class HomeController extends Controller
 {
@@ -21,18 +21,25 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // Top orgs for homepage
         $orgs = Organization::where('trust_status', 'trusted')
             ->orderByRaw("
-        CASE 
-            WHEN membership = 'premium' THEN 1
-            WHEN membership = 'verified' THEN 2
-            ELSE 3
-        END
-    ")
+                CASE 
+                    WHEN membership = 'premium' THEN 1
+                    WHEN membership = 'verified' THEN 2
+                    ELSE 3
+                END
+            ")
             ->take(4)
             ->get();
 
-        return view('home', compact('featured', 'latest', 'orgs'));
+        $featuredCreators = Creator::with('games')
+            ->where('is_active', true)
+            ->where('is_featured', true)
+            ->orderBy('sort_order')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('home', compact('featured', 'latest', 'orgs', 'featuredCreators'));
     }
 }

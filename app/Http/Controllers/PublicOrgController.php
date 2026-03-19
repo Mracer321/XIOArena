@@ -78,11 +78,6 @@ class PublicOrgController extends Controller
         $instagram = null;
         $discord = null;
 
-        /*
-    --------------------------
-    YOUTUBE SUBSCRIBERS
-    --------------------------
-    */
 
         if ($org->youtube) {
 
@@ -111,11 +106,7 @@ class PublicOrgController extends Controller
             }
         }
 
-        /*
-    --------------------------
-    INSTAGRAM FOLLOWERS
-    --------------------------
-    */
+
 
         if ($org->instagram) {
 
@@ -144,11 +135,7 @@ class PublicOrgController extends Controller
             }
         }
 
-        /*
-    --------------------------
-    DISCORD MEMBERS
-    --------------------------
-    */
+
 
         $discord = null;
 

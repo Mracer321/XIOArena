@@ -20,6 +20,8 @@
             <i data-lucide="trophy" class="w-6 h-6 text-blue-400"></i>
         </div>
 
+
+
     </div>
 
     <!-- Total Organizations -->
@@ -49,7 +51,17 @@
         </div>
 
     </div>
+    <!-- Total Creators -->
+    <div class="bg-[#111827] p-6 rounded-xl flex items-center justify-between hover:bg-[#1f2937] transition">
+        <div>
+            <p class="text-sm text-gray-400">Total Creators</p>
+            <p class="text-2xl font-bold mt-2">{{ \App\Models\Creator::count() }}</p>
+        </div>
 
+        <div class="bg-cyan-500/20 p-3 rounded-lg">
+            <i data-lucide="users" class="w-6 h-6 text-cyan-400"></i>
+        </div>
+    </div>
 </div>
 
 @endsection

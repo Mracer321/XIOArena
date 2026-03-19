@@ -249,7 +249,7 @@ lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible">
 
         </div>
 
-        <a href="/organizations"
+        <a href="/orgs"
             class="flex items-center gap-1 text-sm text-blue-400 hover:text-blue-300">
 
             View All
@@ -338,6 +338,77 @@ bg-gray-700 text-gray-300">
 
 </div>
 
+<div class="mt-14">
+
+    <div class="flex items-end justify-between mb-6">
+
+        <div>
+            <h2 class="text-xl md:text-2xl font-semibold text-white">
+                Featured Creators
+            </h2>
+
+            <p class="text-sm text-gray-400 mt-1">
+                Explore gaming creators available for promotions and collaborations
+            </p>
+        </div>
+
+        <a href="{{ route('creators.index') }}"
+            class="flex items-center gap-1 text-sm font-medium text-blue-400 hover:text-blue-300 transition">
+            View All
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </a>
+
+    </div>
+
+    <div class="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible">
+
+        @forelse($featuredCreators as $creator)
+        <a href="{{ route('creator.show', $creator->slug) }}"
+            class="min-w-[300px] lg:min-w-0 snap-start bg-[#111827] border border-gray-800 hover:border-blue-500/40 rounded-2xl p-5 transition block">
+
+            <div class="flex items-start gap-4">
+                <img
+                    src="{{ $creator->profile_image ? asset('storage/' . $creator->profile_image) : 'https://picsum.photos/200' }}"
+                    class="w-16 h-16 rounded-full object-cover shrink-0">
+
+                <div class="min-w-0 flex-1">
+                    <h3 class="text-xl font-semibold text-white truncate">
+                        {{ $creator->name }}
+                    </h3>
+
+                    <p class="text-sm text-gray-400 mt-1">
+                        {{ $creator->games->pluck('game_name')->implode(', ') ?: 'Gaming Creator' }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-3 text-sm">
+                <div class="flex items-center justify-between text-gray-300">
+                    <span>Subscribers</span>
+                    <span class="font-semibold text-white creator-youtube-count" data-slug="{{ $creator->slug }}">--</span>
+                </div>
+
+                <div class="flex items-center justify-between text-gray-300">
+                    <span>Followers</span>
+                    <span class="font-semibold text-white creator-instagram-count" data-slug="{{ $creator->slug }}">--</span>
+                </div>
+            </div>
+
+            <div class="mt-6">
+                <span class="block w-full text-center bg-blue-500 hover:bg-blue-600 px-4 py-3 rounded-xl font-semibold transition">
+                    View Profile
+                </span>
+            </div>
+        </a>
+        @empty
+        <p class="text-gray-400 text-sm col-span-3">
+            No creators available.
+        </p>
+        @endforelse
+
+    </div>
+
+</div>
 
 <!-- CTA Section -->
 <section class="mt-16">

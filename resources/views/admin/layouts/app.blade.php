@@ -82,6 +82,14 @@ transition-transform duration-300">
 
                 </a>
 
+                <a href="/admin/creators"
+                    class="flex items-center gap-3 px-4 py-2 rounded-lg
+{{ request()->is('admin/creators*') ? 'bg-blue-600/20 text-blue-400' : 'hover:bg-gray-800' }}">
+
+                    <i data-lucide="users"></i>
+                    Creators
+
+                </a>
 
                 <a href="/admin/users"
                     class="flex items-center gap-3 px-4 py-2 rounded-lg
