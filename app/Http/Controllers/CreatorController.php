@@ -11,33 +11,79 @@ class CreatorController extends Controller
 {
     public function index(Request $request)
     {
+        $search = $request->search;
+        $game = $request->game;
+
         $query = Creator::with('games')
-            ->where('is_active', true)
-            ->orderByDesc('is_featured')
-            ->orderBy('sort_order')
-            ->latest();
+            ->where('is_active', true);
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-
+        if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
+                $q->where('name', 'like', '%' . $search . '%')
                     ->orWhereHas('games', function ($gameQuery) use ($search) {
-                        $gameQuery->where('game_name', 'like', "%{$search}%");
+                        $gameQuery->where('game_name', 'like', '%' . $search . '%');
                     });
             });
         }
 
+        if ($game && $game !== 'all') {
+            if ($game === 'others') {
+                $query->whereHas('games', function ($q) {
+                    $q->whereNotIn('game_name', ['BGMI', 'Free Fire', 'Valorant', 'Call of Duty']);
+                });
+            } else {
+                $query->whereHas('games', function ($q) use ($game) {
+                    $q->where('game_name', $game);
+                });
+            }
+        }
+
+        $creators = $query
+            ->orderByDesc('is_featured')
+            ->orderBy('sort_order')
+            ->latest()
+            ->paginate(9)
+            ->withQueryString();
+
         $featuredCreators = Creator::with('games')
             ->where('is_active', true)
             ->where('is_featured', true)
-            ->orderBy('sort_order')
             ->take(3)
             ->get();
 
-        $creators = $query->paginate(12);
+        $gameCounts = [
+            'all' => Creator::where('is_active', true)->count(),
 
-        return view('creators.index', compact('creators', 'featuredCreators'));
+            'BGMI' => Creator::where('is_active', true)
+                ->whereHas('games', fn($q) => $q->where('game_name', 'BGMI'))
+                ->count(),
+
+            'Free Fire' => Creator::where('is_active', true)
+                ->whereHas('games', fn($q) => $q->where('game_name', 'Free Fire'))
+                ->count(),
+
+            'Valorant' => Creator::where('is_active', true)
+                ->whereHas('games', fn($q) => $q->where('game_name', 'Valorant'))
+                ->count(),
+
+            'Call of Duty' => Creator::where('is_active', true)
+                ->whereHas('games', fn($q) => $q->where('game_name', 'Call of Duty'))
+                ->count(),
+
+            'others' => Creator::where('is_active', true)
+                ->whereHas('games', function ($q) {
+                    $q->whereNotIn('game_name', ['BGMI', 'Free Fire', 'Valorant', 'Call of Duty']);
+                })
+                ->count(),
+        ];
+
+        return view('creators.index', compact(
+            'creators',
+            'featuredCreators',
+            'gameCounts',
+            'search',
+            'game'
+        ));
     }
 
     public function show($slug)
